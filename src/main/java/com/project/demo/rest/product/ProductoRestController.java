@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,18 +40,19 @@ public class ProductoRestController {
         if (actualProduct.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Product already registered.");
         }
-        Optional<Product> optionalCategory = categoryRepository.findByName(product.getCategory().getName());
+        Optional<Category> optionalCategory = categoryRepository.findByName(product.getCategory().getName());
 
         if (optionalCategory.isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Category does not exist.");
         }
-        product.setCategory(optionalCategory.get().getCategory());
+        product.setCategory(optionalCategory.get());
         Product savedProduct = ProductRepository.save(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduct);
 
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
         return ProductRepository.findById(id)
                 .map(actualProduct->{
@@ -58,6 +60,7 @@ public class ProductoRestController {
             actualProduct.setDescription(product.getDescription());
             actualProduct.setPrice(product.getPrice());
             actualProduct.setCategory(product.getCategory());
+
             return ProductRepository.save(actualProduct);
         })
                 .orElseGet(()->{
@@ -68,6 +71,7 @@ public class ProductoRestController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public void deleteProduct(@PathVariable Long id) {
         ProductRepository.deleteById(id);
     }

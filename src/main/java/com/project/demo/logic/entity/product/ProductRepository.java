@@ -11,6 +11,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE %?1% ")
     List<Product> findProductsWithCharacter(String name);
 
+
+
+
     @Query("SELECT p FROM Product p WHERE p.name = ?1")
     Optional<Product> findByName(String name);
 }

@@ -35,6 +35,7 @@ public class CategoryRestController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public Category updateCategory(@PathVariable long id, @RequestBody Category category) {
 
         return CategoryRepository.findById(id)
@@ -50,6 +51,7 @@ public class CategoryRestController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public void deleteCategory(@PathVariable long id) {
         CategoryRepository.deleteById(id);
     }
