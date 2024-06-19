@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/categories")
@@ -17,6 +18,10 @@ public class CategoryRestController {
 
     @Autowired
     private CategoryRepository CategoryRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @GetMapping
     public List<Category> getAllCategories() {
@@ -53,6 +58,8 @@ public class CategoryRestController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('SUPER_ADMIN')")
     public void deleteCategory(@PathVariable long id) {
+
+
         CategoryRepository.deleteById(id);
     }
 

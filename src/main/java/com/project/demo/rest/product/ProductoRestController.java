@@ -60,6 +60,8 @@ public class ProductoRestController {
             actualProduct.setDescription(product.getDescription());
             actualProduct.setPrice(product.getPrice());
             actualProduct.setCategory(product.getCategory());
+            actualProduct.setQtyStock(product.getQtyStock());
+
 
             return ProductRepository.save(actualProduct);
         })
